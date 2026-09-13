@@ -23,16 +23,89 @@ immediately. Swap in your own CSVs later — see "Using your own data" below.
 
 ## Setup
 
+These steps only work against a **real local clone** of this repo (not
+VS Code's "Open Remote Repository" / github.dev virtual view — that mode
+has no real Python environment behind it, so notebooks and installs won't
+work there).
+
+### 0. Get the code onto your machine
+
+Same on Mac and Windows. Open a terminal (macOS: Terminal app; Windows:
+PowerShell or the VS Code integrated terminal) and run:
+
 ```bash
+git clone https://github.com/d-murphy16/d-murphy16.git
+cd d-murphy16
+git checkout claude/claude-code-mechanics-np6sz4
 cd hybrid-energy-model
+code .
+```
+
+`code .` opens this folder in VS Code. From here on, use VS Code's
+**integrated terminal** (``Terminal > New Terminal``, or `` Ctrl+` ``) so
+you stay inside the folder you just opened.
+
+### 1. Create a Python environment
+
+Pick **one** of the two options below — don't mix them.
+
+**Option A — `venv` (uses your system Python)**
+
+macOS / Linux:
+```bash
 python3 -m venv .venv
-source .venv/bin/activate   # on Windows: .venv\Scripts\activate
+source .venv/bin/activate
+```
+
+Windows (PowerShell):
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+```
+
+Windows (cmd.exe):
+```cmd
+python -m venv .venv
+.venv\Scripts\activate.bat
+```
+
+**Option B — Anaconda / Miniconda (if you already use conda)**
+
+Same commands on macOS and Windows, run from the **Anaconda Prompt** on
+Windows (or any terminal with `conda` on PATH):
+
+```bash
+conda create -n hybrid-energy python=3.11
+conda activate hybrid-energy
+```
+
+(Or use an existing environment, e.g. `conda activate base` — just make
+sure the next step installs into the same environment you'll select as
+the notebook kernel later.)
+
+### 2. Install the dependencies + this package
+
+With your environment from step 1 **activated**:
+
+```bash
 pip install -r requirements.txt
 pip install -e .   # installs the hybrid_energy package itself, in editable mode
 ```
 
-Then open `notebooks/01_getting_started.ipynb` in VS Code (with the Jupyter
-extension) and run all cells.
+### 3. Open the notebook and select the right kernel
+
+1. Open `notebooks/01_getting_started.ipynb` in VS Code (Jupyter extension
+   required — VS Code usually prompts you to install it automatically).
+2. Click the **kernel picker** in the top-right corner of the notebook.
+3. Choose the environment you created in step 1 (e.g. `.venv` or
+   `hybrid-energy` conda env) — not your system/base Python, unless that's
+   what you installed into.
+4. Run all cells (▶▶ "Run All", or run cells one by one with `Shift+Enter`).
+
+If you ever see `ModuleNotFoundError: No module named 'hybrid_energy'`,
+it means the selected kernel isn't the environment you ran
+`pip install -e .` in — go back to step 3 and pick the right one, or
+re-run step 2 with the kernel's environment activated.
 
 ## Project layout
 
